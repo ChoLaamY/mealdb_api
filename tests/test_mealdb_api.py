@@ -29,14 +29,14 @@ def test_filter_recipe_assertion():
     with pytest.raises(AssertionError):
         mealdb_api.filter_recipes('table')
 
-@pytest.mark.parametrize('example_fil, expected_fil', [
-    ('blackberries', ['Fruit and Cream Cheese Breakfast Pastries', 'Summer Pudding']),
-    ('sardine', ['Fresh sardines', 'Grilled Portuguese sardines']),
-    ('oregano', ['Braised Beef Chilli', 'Pizza Express Margherita'])
+@pytest.mark.parametrize('example_i, example_c, example_a, expected_fil', [
+    ('oregano', '', 'italian', ['Pizza Express Margherita']),
+    ('egg', 'breakfast', '', ['Salmon Eggs Eggs Benedict']),
+    ('flour', 'dessert', 'american', ['Krispy Kreme Donut', 'Pancakes'])
 ])
 
-def test_filter_recipes(example_fil, expected_fil):
-    assert expected_fil == mealdb_api.filter_recipes(example_fil)
+def test_filter_recipes(example_i, example_c, example_a, expected_fil):
+    assert expected_fil == mealdb_api.filter_recipes(example_i, example_c, example_a)
 
 # test functions for recipe_ingredients
 def test_recipe_ingredients_assert():

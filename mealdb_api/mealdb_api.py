@@ -143,58 +143,124 @@ def define_ingredient(ingredient=''):
 
 
 
-def filter_recipes(ingredient=''):
+def filter_recipes(ingredient='', category='', area=''):
     '''
-    Filter recipes on The MealDB by an ingredient. 
+    Filtering all the recipes on The MealDB by ingredient, category, and area. 
 
     Parameters
     ----------
     ingredient: str
         A string, an ingredient.
+    category: str
+        A string, a category.
+    area: str
+        A string, an area.
 
     Returns
     -------
     recipe_list: list[str]
-        A list, returns a list of all the recipe names from The MealDB that contains the ingredient that is searched for.
+        A list, returns a list of all the recipe names from The MealDB filtered by the search inputs.
 
     Example
     -------
-    >>> ingredient = str('chilli')
-    >>> filter_recipies(ingredient='chilli')
+    >>> ingredient = str('chocolate')
+    >>> category = str('dessert')
+    >>> area = str('american')
+    >>> filter_recipies(ingredient='chocolate', category='dessert', area='american')
         output: list[str]
-            ['Kung Po Prawns', 'Mee goreng mamak', 'Roti john']
+            ['Hot Chocolate Fudge', 'Rocky Road Fudge', 'Chocolate Raspberry Brownies']
     '''
     
+    # add assert statements to catch inputs that will return none
+    avail_category = list_all('Category')
+    avail_category_lower = [c.lower() for c in avail_category]
+    avail_area = list_all('Area')
+    avail_area_lower = [c.lower() for c in avail_area]
     assert isinstance(ingredient, str), f'ingredient is {ingredient}, ingredient should a string'
-    
-    req = requests.get(url='https://www.themealdb.com/api/json/v1/1/filter.php', params={'i': ingredient})
-    if req.status_code != 200:
-        raise Exception(f'Error: {req.status_code}')
+    assert isinstance(category, str), f'category is {category}, category should be a string'
+    assert isinstance(area, str), f'area is {area}, area should be a string'
 
-    dict_ingredient = dict(req.json())['meals']
     recipe_list = []
+    recipe_list_I = []
+    recipe_list_C = []
+    recipe_list_A = []
+    # calling ingredient search endpoint
+    if ingredient != '':    
+        req_ingredient = requests.get(url='https://www.themealdb.com/api/json/v1/1/filter.php', params={'i': ingredient})
+        if req_ingredient.status_code != 200:
+            raise Exception(f'Error: {req_ingredient.status_code}')
 
-    if dict_ingredient != None:
-        for m in dict_ingredient:
-            recipe_list.append(m['strMeal'])
-    else:
-        # if there is no one on one match
-        # find exact term using define_ingredient
-        gen_ing = define_ingredient(ingredient)
-        gen_list = []
-        for g in gen_ing:
-            gen_list.append(g)
-            
-        # iterate through the list of ingredients
-        for i in gen_list:
-            req_general = requests.get(url='https://www.themealdb.com/api/json/v1/1/filter.php', params={'i': i})
-            if req_general.status_code != 200:
-                raise Exception(f'Error: {req_general.status_code}')
+        dict_ingredient = dict(req_ingredient.json())['meals']
 
-            dict_general = dict(req_general.json())['meals']
-            if dict_general != None:
-                for n in dict_general:
-                    recipe_list.append(n['strMeal'])
+        if dict_ingredient != None:
+            for m in dict_ingredient:
+                recipe_list_I.append(m['strMeal'])
+        else:
+            # if there is no one on one match
+            # find exact term using define_ingredient
+            gen_ing = define_ingredient(ingredient)
+            gen_list = []
+            for g in gen_ing:
+                gen_list.append(g)
+                
+            # iterate through the list of ingredients
+            for i in gen_list:
+                req_general = requests.get(url='https://www.themealdb.com/api/json/v1/1/filter.php', params={'i': i})
+                if req_general.status_code != 200:
+                    raise Exception(f'Error: {req_general.status_code}')
+
+                dict_general = dict(req_general.json())['meals']
+                if dict_general != None:
+                    for n in dict_general:
+                        recipe_list_I.append(n['strMeal'])
+
+    # call category search endpoint
+    if category != '':
+        assert (category in avail_category) | (category in avail_category_lower), f'category is {category}, check list_all("Category") to see the avaliable categories'
+        req_category = requests.get(url='https://www.themealdb.com/api/json/v1/1/filter.php', params={'c': category})
+        if req_category.status_code != 200:
+            raise Exception(f'Error: {req_category.status_code}')
+
+        dict_category = dict(req_category.json())['meals']
+        
+        if dict_category != None:
+            for c in dict_category:
+                recipe_list_C.append(c['strMeal'])
+
+    # calling area search endpoint
+    if area != '':
+        assert (area in avail_area) | (area in avail_area_lower), f'area is {area}, check list_all("Area") to see the avaliable areas'
+        req_area = requests.get(url='https://www.themealdb.com/api/json/v1/1/filter.php', params={'a': area})
+        if req_area.status_code != 200:
+            raise Exception(f'Error: {req_area.status_code}')
+
+        dict_area = dict(req_area.json())['meals']
+        
+        if dict_area != None:
+            for c in dict_area:
+                recipe_list_A.append(c['strMeal'])
+
+    # compare matches for recipe lists
+    if (recipe_list_I != []) and (recipe_list_C == []) and (recipe_list_A == []):
+        recipe_list = recipe_list_I
+    elif (recipe_list_I == []) and (recipe_list_C != []) and (recipe_list_A == []):
+        recipe_list = recipe_list_C
+    elif (recipe_list_I == []) and (recipe_list_C == []) and (recipe_list_A != []):
+        recipe_list = recipe_list_A
+    elif (recipe_list_I != []) and (recipe_list_C != []) and (recipe_list_A == []):
+        recipe_list = list(set(recipe_list_I).intersection(recipe_list_C))
+    elif (recipe_list_I != []) and (recipe_list_C == []) and (recipe_list_A != []):
+        recipe_list = list(set(recipe_list_I).intersection(recipe_list_A))
+    elif (recipe_list_I == []) and (recipe_list_C != []) and (recipe_list_A != []):
+        recipe_list = list(set(recipe_list_C).intersection(recipe_list_A))
+    elif (recipe_list_I != []) and (recipe_list_C != []) and (recipe_list_A != []):
+        recipe_match_IC = list(set(recipe_list_I).intersection(recipe_list_C))
+        recipe_match_IA = list(set(recipe_list_I).intersection(recipe_list_A))
+        recipe_match_AC = list(set(recipe_list_A).intersection(recipe_list_C))
+        recipe_match_IC_IA = list(set(recipe_match_IC).intersection(recipe_match_IA))
+        recipe_list = list(set(recipe_match_IC_IA).intersection(recipe_match_AC))
+
+    assert len(recipe_list) > 0, f'There is no combination of {ingredient, category, area} on TheMealBD\'s database of recipes'
 
     return recipe_list
 
