@@ -12,7 +12,7 @@ To install mealdb_api, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install -u mealdb_api
+    $ pip install -i https://test.pypi.org/simple/ mealdb-api
 
 This is the preferred method to install mealdb_api, as it will always install the most recent stable release.
 
