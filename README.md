@@ -12,6 +12,8 @@ $ pip install -i https://test.pypi.org/simple/ mealdb_api
 
 ## Features
 
+* API wrapper for the free MealDB API
+* access to ingredients, categories, and areas from the MealDB
 * filter for recipes by ingredient, category, and area
 * returns recipe ingredients and instructions as a dataframe and dictionary respectiviely
 
