@@ -2,7 +2,8 @@
 
 ![](https://github.com/ChoLaamY/mealdb_api/workflows/build/badge.svg) [![codecov](https://codecov.io/gh/ChoLaamY/mealdb_api/branch/main/graph/badge.svg)](https://codecov.io/gh/ChoLaamY/mealdb_api) ![Release](https://github.com/ChoLaamY/mealdb_api/workflows/Release/badge.svg) [![Documentation Status](https://readthedocs.org/projects/mealdb_api/badge/?version=latest)](https://mealdb_api.readthedocs.io/en/latest/?badge=latest)
 
-Python package that allows users to interact with The MealDB API, filtering by ingredients and obtaining recipe instrictions.
+Python package that allows users to interact with The MealDB API, filtering by ingredients, obtaining recipe instrictions, and other functions.
+Find more details on The MealDB documentation [here](https://www.themealdb.com/api.php) and access the webpage [here](https://www.themealdb.com/). 
 
 ## Installation
 
