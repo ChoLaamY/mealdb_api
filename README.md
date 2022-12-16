@@ -12,15 +12,19 @@ $ pip install -i https://test.pypi.org/simple/ mealdb_api
 
 ## Features
 
-- TODO
+* filter for recipes by ingredient, category, and area
+* returns recipe ingredients and instructions as a dataframe and dictionary respectiviely
 
 ## Dependencies
 
-- TODO
+* request
+* re
+* pandas
 
 ## Usage
 
-- TODO
+see [vignette](vignette/how_to_mealdb_api.ipynb) for examples of using mealdb_api functions
+
 
 ## Documentation
 
