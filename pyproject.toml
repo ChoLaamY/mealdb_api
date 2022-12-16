@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "mealdb-api"
+version = "0.1.0"
+description = "Python package that allows users to interact with The MealDB API, filtering by ingredients and obtaining recipe instrictions."
+authors = ["ChoLaamY <cy2617@columbia.edu>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "mealdb_api"}]
+
+[tool.poetry.dependencies]
+python = "3.8.8"
+requests = "^2.28.1"
+pandas = "^1.5.2"
+regex = "^2022.10.31"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+codecov = "^2.1.12"
+python-semantic-release = "^7.32.2"
+flake8 = "^6.0.0"
+Sphinx = "^5.3.0"
+sphinxcontrib-napoleon = "^0.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
