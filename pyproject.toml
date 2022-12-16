@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mealdb-api"
-version = "0.1.0"
+version = "0.3.0"
 description = "Python package that allows users to interact with The MealDB API, filtering by ingredients and obtaining recipe instrictions."
 authors = ["ChoLaamY <cy2617@columbia.edu>"]
 license = "MIT"
