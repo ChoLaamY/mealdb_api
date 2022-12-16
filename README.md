@@ -23,7 +23,7 @@ $ pip install -i https://test.pypi.org/simple/ mealdb_api
 
 ## Usage
 
-see [vignette](vignette/how_to_mealdb_api.ipynb) for examples of using mealdb_api functions
+see [vignette](vignettes/how_to_mealdb_api.ipynb) for examples of using mealdb_api functions
 
 
 ## Documentation
